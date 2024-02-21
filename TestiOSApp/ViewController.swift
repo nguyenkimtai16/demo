@@ -11,6 +11,7 @@ import Combine
 class ViewController: UIViewController {
 
     var subscriptions = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +19,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func plusAction(_ sender: UIButton) {
-        fd
+        
 //        let publisher = Just("Combine Swift")
 //        let subscribtion = publisher.sink { value in
 //          print(value)
@@ -65,19 +66,28 @@ class ViewController: UIViewController {
 //            print(value)
 //        }
         
-//        var subscriptions = Set<AnyCancellable>()
-//        let numbers = PassthroughSubject<Int, Never>()
-//        numbers
-//          .last(where: { $0 % 2 == 0 })
-//          .sink(receiveCompletion: { print("Completed with: \($0)") },
-//                receiveValue: { print($0) })
-//          .store(in: &subscriptions)
-//        numbers.send(1)
-//        numbers.send(2)
-//        numbers.send(3)
-//        numbers.send(4)
-//        numbers.send(5)
-//        numbers.send(completion: .finished)
+        struct WebSiteData: Codable {
+            var rawHTML: String
+        }
+
+
+        let myURL = URL(string: "https://www.example.com")
+
+
+        URLSession.shared.dataTaskPublisher(for: myURL!)
+            .retry(3)
+            .map({ (page) -> WebSiteData in
+                return WebSiteData(rawHTML: String(decoding: page.data, as: UTF8.self))
+            })
+            .catch { error in
+                return Just(WebSiteData(rawHTML: "<HTML>Unable to load page - timed out.</HTML>"))
+        }
+        .sink(receiveCompletion: { print ("completion: \($0)") },
+              receiveValue: { print ("value: \($0)") }
+         )
+        .store(in: &cancellables)
+        
+//        cancellable.cancel()
         
         // Encode
 //        struct Article: Codable {
