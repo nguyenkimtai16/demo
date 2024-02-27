@@ -2,14 +2,15 @@ name: iOS starter workflow
 
 on:
   push:
+    tags: [ 'v*.*.*' ]
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+  # pull_request:
+  #   branches: [ "develop" ]
 
 jobs:
   build:
     name: Build and Test default scheme using any available iPhone simulator
-    runs-on: macos-latest
+    runs-on: [self-hosted, macOS, ARM64] # macos-latest
 
     steps:
       - name: Checkout
