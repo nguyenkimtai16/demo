@@ -5,8 +5,8 @@ on:
     tags: 
       - v*.*.*
     # [ 'v*.*.*' ]
-    branches: 
-      - develop
+    # branches: 
+    #   - develop
     # [ "develop" ]
   # pull_request:
   #   branches: [ "develop" ]
