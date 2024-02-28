@@ -2,8 +2,12 @@ name: iOS starter workflow
 
 on:
   push:
-    tags: [ 'v*.*.*' ]
-    branches: [ "develop" ]
+    tags: 
+      - v*.*.*
+    # [ 'v*.*.*' ]
+    branches: 
+      - develop
+    # [ "develop" ]
   # pull_request:
   #   branches: [ "develop" ]
 
